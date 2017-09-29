@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="style.css">
+    <title>Random Quote Generator</title>
+</head>
+<body>
+    <!--Title and Nav Bar-->
+    <header>
+    <div class="container">
+        <div id="branding">
+                <h1>Random <span class="hightlight">Quote</span> Generator</h1>
+        </div>
+    </div>
+    <!--container-->
+    </header>
+
+    <section id="generator">
+        <div class="container">
+            <button id="button">Click for Quote</button>
+            <div id="quote_display"></div>
+            <div id="quote_author"></div>
+        </div>
+    </section>
+
+    <footer>
+        <p>Tymx Random Quote Generator, Copyright &copy; 2017</p>
+    </footer>
+
+    <script>
+        document.getElementById('button').addEventListener('click',showQuote);
+
+        function showQuote(){
+            var xhr = new XMLHttpRequest;
+
+            //API by Tadas Talaikis
+            xhr.open('GET','https://talaikis.com/api/quotes/random/', true);
+
+            xhr.onload = function(){
+                if(this.status == 200){
+                    var quote = JSON.parse(this.responseText);
+
+                    document.getElementById('quote_display').innerHTML = quote.quote;
+                    document.getElementById('quote_author').innerHTML = quote.author;
+
+                }
+            }
+
+            xhr.send();
+        }
+    </script>
+</body>
+</html>
