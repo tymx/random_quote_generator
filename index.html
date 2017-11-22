@@ -13,12 +13,36 @@
     <button id="button" class="button">Click for Quote</button>
     <div id="quote_display"><p id="quote_author"></p></div>
     <div id="quote_author"></div>
+    <div id="tweet">
+      <!-- <a class="twitter-share-button" href="https://twitter.com/intent/tweet?text=quote">Tweet</a> -->
+    </div>
   </header>
   <footer>
       <p>Taylor Martinez | Random Quote Generator, Copyright &copy; 2017</p>
   </footer>
+  <!-- Adding twitter js -->
+  <script>
+      window.twttr = (function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0],
+        t = window.twttr || {};
+      if (d.getElementById(id)) return t;
+      js = d.createElement(s);
+      js.id = id;
+      js.src = "https://platform.twitter.com/widgets.js";
+      fjs.parentNode.insertBefore(js, fjs);
+
+      t._e = [];
+      t.ready = function(f) {
+        t._e.push(f);
+      };
+
+      return t;
+    }(document, "script", "twitter-wjs"));
+  </script>
   <script>
         document.getElementById('button').addEventListener('click',showQuote);
+
+        var count = 0;
 
         function showQuote(){
             var xhr = new XMLHttpRequest;
@@ -30,8 +54,29 @@
                 if(this.status == 200){
                     var quote = JSON.parse(this.responseText);
 
+                    //Deleting old twitter button
+                    if(count > 0)
+                    {
+                      //Can be simply done like this but not recommended
+                      //document.getElementById('tweet').innerHTML = "";
+                      var old_tweet = document.getElementById('tweet');
+                      while (old_tweet.hasChildNodes()) {
+                          old_tweet.removeChild(old_tweet.firstChild);
+                      }
+                    }
+
                     document.getElementById('quote_display').innerHTML = quote.quote;
                     document.getElementById('quote_author').innerHTML = 'Author: ' + quote.author;
+
+                    //Adding twitter button
+                    twttr.widgets.createShareButton(
+                      '/',
+                      document.getElementById('tweet'),
+                      {
+                        text: quote.quote + ' Author: ' + quote.author,
+                        size: 'large'
+                      }
+                    );
 
                     //Styling Quote
                     document.getElementById('quote_display').style.backgroundColor = '#f9f9f9';
@@ -44,9 +89,11 @@
                     //Styling author
                     document.getElementById('quote_author').style.marginTop = '20px';
                     document.getElementById('quote_author').style.fontSize = '20px';
+                    document.getElementById('quote_author').style.paddingBottom = '20px';
 
                 }
             }
+            count++;
 
             xhr.send();
         }
