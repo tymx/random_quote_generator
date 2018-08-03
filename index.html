@@ -16,30 +16,22 @@
     <div id="tweet">
       <!-- <a class="twitter-share-button" href="https://twitter.com/intent/tweet?text=quote">Tweet</a> -->
     </div>
-  </header>
-  <footer>
-      <p>Taylor Martinez | Random Quote Generator, Copyright &copy; 2017</p>
-  </footer>
-  <!-- Adding twitter js -->
-  <script>
-      window.twttr = (function(d, s, id) {
-      var js, fjs = d.getElementsByTagName(s)[0],
-        t = window.twttr || {};
-      if (d.getElementById(id)) return t;
-      js = d.createElement(s);
-      js.id = id;
-      js.src = "https://platform.twitter.com/widgets.js";
-      fjs.parentNode.insertBefore(js, fjs);
+    <!--container-->
+    </header>
 
-      t._e = [];
-      t.ready = function(f) {
-        t._e.push(f);
-      };
+    <section id="generator">
+        <div class="container">
+            <button id="button">Click for Quote</button>
+            <div id="quote_display"></div>
+            <div id="quote_author"></div>
+        </div>
+    </section>
 
-      return t;
-    }(document, "script", "twitter-wjs"));
-  </script>
-  <script>
+    <footer>
+        <p>Tymx Random Quote Generator, Copyright &copy; 2018></p>
+    </footer>
+
+    <script>
         document.getElementById('button').addEventListener('click',showQuote);
 
         var count = 0;
