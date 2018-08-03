@@ -4,16 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="style.css">
     <title>Random Quote Generator</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <!--Title and Nav Bar-->
-    <header>
-    <div class="container">
-        <div id="branding">
-                <h1>Random <span class="hightlight">Quote</span> Generator</h1>
-        </div>
+  <header id="showcase">
+    <h1>Random Quote Generator</h1>
+    <button id="button" class="button">Click for Quote</button>
+    <div id="quote_display"><p id="quote_author"></p></div>
+    <div id="quote_author"></div>
+    <div id="tweet">
+      <!-- <a class="twitter-share-button" href="https://twitter.com/intent/tweet?text=quote">Tweet</a> -->
     </div>
     <!--container-->
     </header>
@@ -33,6 +34,8 @@
     <script>
         document.getElementById('button').addEventListener('click',showQuote);
 
+        var count = 0;
+
         function showQuote(){
             var xhr = new XMLHttpRequest;
 
@@ -43,11 +46,46 @@
                 if(this.status == 200){
                     var quote = JSON.parse(this.responseText);
 
+                    //Deleting old twitter button
+                    if(count > 0)
+                    {
+                      //Can be simply done like this but not recommended
+                      //document.getElementById('tweet').innerHTML = "";
+                      var old_tweet = document.getElementById('tweet');
+                      while (old_tweet.hasChildNodes()) {
+                          old_tweet.removeChild(old_tweet.firstChild);
+                      }
+                    }
+
                     document.getElementById('quote_display').innerHTML = quote.quote;
-                    document.getElementById('quote_author').innerHTML = quote.author;
+                    document.getElementById('quote_author').innerHTML = 'Author: ' + quote.author;
+
+                    //Adding twitter button
+                    twttr.widgets.createShareButton(
+                      '/',
+                      document.getElementById('tweet'),
+                      {
+                        text: quote.quote + ' Author: ' + quote.author,
+                        size: 'large'
+                      }
+                    );
+
+                    //Styling Quote
+                    document.getElementById('quote_display').style.backgroundColor = '#f9f9f9';
+                    document.getElementById('quote_display').style.borderLeft = '10px solid #ccc';
+                    document.getElementById('quote_display').style.borderRight = '10px solid #ccc';
+                    document.getElementById('quote_display').style.padding = '0.5em 10px';
+                    document.getElementById('quote_display').style.color = 'black';
+                    document.getElementById('quote_display').style.content = 'open-quote';
+
+                    //Styling author
+                    document.getElementById('quote_author').style.marginTop = '20px';
+                    document.getElementById('quote_author').style.fontSize = '20px';
+                    document.getElementById('quote_author').style.paddingBottom = '20px';
 
                 }
             }
+            count++;
 
             xhr.send();
         }
